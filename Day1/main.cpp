@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <unordered_map>
+#include <typeinfo>
 
 using namespace std;
 
@@ -64,6 +65,51 @@ int first_problem(vector<string> input)
     return result;
 }
 
+int second_problem(vector<string> input)
+{
+    vector<string> first_column;
+    vector<string> second_column;
+    unordered_map<string, int> counter;
+
+    for (auto &line : input)
+    {
+        int pos = line.find(" ");
+
+        string first_item = line.substr(0, pos);
+        string second_item = line.substr(pos + 1);
+
+        first_column.push_back(first_item);
+        second_column.push_back(second_item);
+    }
+
+    for (int i = 0; i < first_column.size(); i++)
+    {
+        int occurences = 0;
+        int item_to_compare = stoi(first_column[i]);
+
+        for (int j = 0; j < first_column.size(); j++)
+        {
+            int current_element = stoi(second_column[j]);
+
+            if (item_to_compare == current_element)
+            {
+                occurences += 1;
+            }
+        }
+
+        counter[first_column[i]] = occurences;
+    }
+
+    int result = 0;
+
+    for (auto &item : first_column)
+    {
+        result += counter[item] * stoi(item);
+    }
+
+    return result;
+}
+
 int main()
 {
     string file_name = "input_1.txt";
@@ -77,7 +123,11 @@ int main()
 
     int result = first_problem(text);
 
-    cout << "Result: " << result << endl;
+    cout << "Result (1): " << result << endl;
+
+    result = second_problem(text);
+
+    cout << "Result (2): " << result << endl;
 
     return 0;
 }
