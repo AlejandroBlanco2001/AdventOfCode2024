@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <unordered_map>
 
 using namespace std;
 
@@ -30,21 +31,12 @@ vector<string> parse_input(string file_name)
     return text;
 }
 
-int main()
+int first_problem(vector<string> input)
 {
-    string file_name = "input_1.txt";
-
-    vector<string> text = parse_input(file_name);
-
-    if (text.empty())
-    {
-        return 1;
-    }
-
     vector<string> first_column;
     vector<string> second_column;
 
-    for (auto &line : text)
+    for (auto &line : input)
     {
         int pos = line.find(" ");
 
@@ -52,6 +44,8 @@ int main()
         second_column.push_back(line.substr(pos + 1));
     }
 
+    // I need to match each element with the equivalent in the other column
+    // therefore, I need to sort both columns
     sort(first_column.begin(), first_column.end());
     sort(second_column.begin(), second_column.end());
 
@@ -66,6 +60,22 @@ int main()
 
         result += abs(first - second);
     }
+
+    return result;
+}
+
+int main()
+{
+    string file_name = "input_1.txt";
+
+    vector<string> text = parse_input(file_name);
+
+    if (text.empty())
+    {
+        return 1;
+    }
+
+    int result = first_problem(text);
 
     cout << "Result: " << result << endl;
 
